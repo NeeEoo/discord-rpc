@@ -9,6 +9,10 @@ have callbacks for where a more complete game would do more things (joining, spe
 
 The most up to date documentation for Rich Presence can always be found on our [developer site](https://discordapp.com/developers/docs/rich-presence/how-to)! If you're interested in rolling your own native implementation of Rich Presence via IPC sockets instead of using our SDK—hey, you've got free time, right?—check out the ["Hard Mode" documentation](https://github.com/discordapp/discord-rpc/blob/master/documentation/hard-mode.md).
 
+### Buttons
+
+In this fork, the `DiscordRichPresence` struct has been modified to have 4 new members: `button1Label`, `button1Url`, `button2Label`, and `button2Url` (I admit, it may not be the best implementation).
+
 ## Basic Usage
 
 Zeroith, you should be set up to build things because you are a game developer, right?
