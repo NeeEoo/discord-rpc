@@ -158,7 +158,7 @@ def unreal(ctx):
             shutil.copy(os.path.join(i, LIBRARY_NAME), build[i])
 
 
-def build_lib(build_name, generator, options, just_release):
+def build_lib(build_name, generator, architecture, options, just_release):
     """ Create a dir under builds, run build and install in it """
     build_path = os.path.join(SCRIPT_PATH, 'builds', build_name)
     install_path = os.path.join(INSTALL_ROOT, build_name)
@@ -168,6 +168,8 @@ def build_lib(build_name, generator, options, just_release):
         initial_cmake = ['cmake', SCRIPT_PATH, '-DCMAKE_INSTALL_PREFIX=%s' % os.path.join('..', 'install', build_name)]
         if generator:
             initial_cmake.extend(['-G', generator])
+        if architecture:
+            initial_cmake.extend(['-A', architecture])
         for key in options:
             val = options[key]
             if type(val) is bool:
@@ -279,24 +281,25 @@ def libs(clean, static, shared, skip_formatter, just_release):
         dynamic_options['WARNINGS_AS_ERRORS'] = True
 
     if PLATFORM == 'win':
-        generator32 = 'Visual Studio 14 2015'
-        generator64 = 'Visual Studio 14 2015 Win64'
+        generator = 'Visual Studio 17 2022'
+        architecture32 = 'Win32'
+        architecture64 = 'x64'
         if static:
-            build_lib('win32-static', generator32, static_options, just_release)
-            build_lib('win64-static', generator64, static_options, just_release)
+            build_lib('win32-static', generator, architecture32, static_options, just_release)
+            build_lib('win64-static', generator, architecture64, static_options, just_release)
         if shared:
-            build_lib('win32-dynamic', generator32, dynamic_options, just_release)
-            build_lib('win64-dynamic', generator64, dynamic_options, just_release)
+            build_lib('win32-dynamic', generator, architecture32, dynamic_options, just_release)
+            build_lib('win64-dynamic', generator, architecture64, dynamic_options, just_release)
     elif PLATFORM == 'osx':
         if static:
-            build_lib('osx-static', None, static_options, just_release)
+            build_lib('osx-static', None, None, static_options, just_release)
         if shared:
-            build_lib('osx-dynamic', None, dynamic_options, just_release)
+            build_lib('osx-dynamic', None, None, dynamic_options, just_release)
     elif PLATFORM == 'linux':
         if static:
-            build_lib('linux-static', None, static_options, just_release)
+            build_lib('linux-static', None, None, static_options, just_release)
         if shared:
-            build_lib('linux-dynamic', None, dynamic_options, just_release)
+            build_lib('linux-dynamic', None, None, dynamic_options, just_release)
 
 
 if __name__ == '__main__':
