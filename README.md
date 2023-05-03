@@ -1,3 +1,7 @@
+# Note
+
+You shouldn't use this nor discord/discord-rpc repositories if you don't like your activity data swapped randomly for no reason whatsoever.
+
 # Discord RPC
 
 This is a library for interfacing your game with a locally running Discord desktop client. It's known to work on Windows, macOS, and Linux. You can use the lib directly if you like, or use it as a guide to writing your own if it doesn't suit your game as is. PRs/feedback welcome if you have an improvement everyone might want, or can describe how this doesn't meet your needs.
