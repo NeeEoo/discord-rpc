@@ -1,8 +1,20 @@
-# Note
-
-You shouldn't use this nor discord/discord-rpc repositories if you don't like your activity data swapped randomly for no reason whatsoever.
-
 # Discord RPC
+
+## Warning
+
+You shouldn't use this nor the [discord/discord-rpc](https://github.com/discord/discord-rpc) repositories if you don't like your activity data swapped randomly (probably a memory management issue somewhere deep down in the serializer).
+
+## Deprecation Notice
+
+This library has been deprecated in favor of Discord's GameSDK. [Learn more here](https://discord.com/developers/docs/game-sdk/sdk-starter-guide)
+
+## What's new in this fork
+
+### Buttons
+
+The `DiscordRichPresence` struct has been modified to have 4 new members: `button1Label`, `button1Url`, `button2Label`, and `button2Url` (I admit, it may not be the best implementation).
+
+---
 
 This is a library for interfacing your game with a locally running Discord desktop client. It's known to work on Windows, macOS, and Linux. You can use the lib directly if you like, or use it as a guide to writing your own if it doesn't suit your game as is. PRs/feedback welcome if you have an improvement everyone might want, or can describe how this doesn't meet your needs.
 
@@ -11,23 +23,19 @@ have callbacks for where a more complete game would do more things (joining, spe
 
 ## Documentation
 
-The most up to date documentation for Rich Presence can always be found on our [developer site](https://discordapp.com/developers/docs/rich-presence/how-to)! If you're interested in rolling your own native implementation of Rich Presence via IPC sockets instead of using our SDK—hey, you've got free time, right?—check out the ["Hard Mode" documentation](https://github.com/discordapp/discord-rpc/blob/master/documentation/hard-mode.md).
-
-### Buttons
-
-In this fork, the `DiscordRichPresence` struct has been modified to have 4 new members: `button1Label`, `button1Url`, `button2Label`, and `button2Url` (I admit, it may not be the best implementation).
+The most up to date documentation for Rich Presence can always be found on our [developer site](https://discord.com/developers/docs/rich-presence/how-to)! If you're interested in rolling your own native implementation of Rich Presence via IPC sockets instead of using our SDK—hey, you've got free time, right?—check out the ["Hard Mode" documentation](https://github.com/discord/discord-rpc/blob/master/documentation/hard-mode.md).
 
 ## Basic Usage
 
 Zeroith, you should be set up to build things because you are a game developer, right?
 
-First, head on over to the [Discord developers site](https://discordapp.com/developers/applications/me) and make yourself an app. Keep track of `Client ID` -- you'll need it here to pass to the init function.
+First, head on over to the [Discord developers site](https://discord.com/developers/applications/me) and make yourself an app. Keep track of `Client ID` -- you'll need it here to pass to the init function.
 
 ### Unreal Engine 4 Setup
 
 To use the Rich Presense plugin with Unreal Engine Projects:
 
-1.  Download the latest [release](https://github.com/discordapp/discord-rpc/releases) for each operating system you are targeting and the zipped source code
+1.  Download the latest [release](https://github.com/discord/discord-rpc/releases) for each operating system you are targeting and the zipped source code
 2.  In the source code zip, copy the UE plugin—`examples/unrealstatus/Plugins/discordrpc`—to your project's plugin directory
 3.  At `[YOUR_UE_PROJECT]/Plugins/discordrpc/source/ThirdParty/DiscordRpcLibrary/`, create an `Include` folder and copy `discord_rpc.h` and `discord_register.h` to it from the zip
 4.  Follow the steps below for each OS
@@ -54,9 +62,9 @@ To use the Rich Presense plugin with Unreal Engine Projects:
 
 If you're a Unity developer looking to integrate Rich Presence into your game, follow this simple guide to get started towards success:
 
-1. Download the DLLs for any platform that you need from [our releases](https://github.com/discordapp/discord-rpc/releases)
+1. Download the DLLs for any platform that you need from [our releases](https://github.com/discord/discord-rpc/releases)
 2. In your Unity project, create a `Plugins` folder inside your `Assets` folder if you don't already have one
-3. Copy the file `DiscordRpc.cs` from [here](https://github.com/discordapp/discord-rpc/blob/master/examples/button-clicker/Assets/DiscordRpc.cs) into your `Assets` folder. This is basically your header file for the SDK
+3. Copy the file `DiscordRpc.cs` from [here](https://github.com/discord/discord-rpc/blob/master/examples/button-clicker/Assets/DiscordRpc.cs) into your `Assets` folder. This is basically your header file for the SDK
 
 We've got our `Plugins` folder ready, so let's get platform-specific!
 
@@ -79,7 +87,7 @@ We've got our `Plugins` folder ready, so let's get platform-specific!
 4. Copy `discord-rpc-linux/linux-dynamic-lib/libdiscord-rpc.so` to `Assets/Plugins/`
 5. Done!
 
-You're ready to roll! For code examples on how to interact with the SDK using the `DiscordRpc.cs` header file, check out [our example](https://github.com/discordapp/discord-rpc/blob/master/examples/button-clicker/Assets/DiscordController.cs)
+You're ready to roll! For code examples on how to interact with the SDK using the `DiscordRpc.cs` header file, check out [our example](https://github.com/discord/discord-rpc/blob/master/examples/button-clicker/Assets/DiscordController.cs)
 
 ### From package
 
@@ -120,7 +128,7 @@ Why do we have three of these? Three times the fun!
 
 | CI                   | badge                                                                                                                                            |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| TravisCI             | [![Build status](https://travis-ci.org/discordapp/discord-rpc.svg?branch=master)](https://travis-ci.org/discordapp/discord-rpc)                  |
+| TravisCI             | [![Build status](https://travis-ci.org/discord/discord-rpc.svg?branch=master)](https://travis-ci.org/discordapp/discord-rpc)                  |
 | AppVeyor             | [![Build status](https://ci.appveyor.com/api/projects/status/qvkoc0w1c4f4b8tj?svg=true)](https://ci.appveyor.com/project/crmarsh/discord-rpc)    |
 | Buildkite (internal) | [![Build status](https://badge.buildkite.com/e103d79d247f6776605a15246352a04b8fd83d69211b836111.svg)](https://buildkite.com/discord/discord-rpc) |
 
