@@ -1,14 +1,14 @@
 # Discord RPC
 
-## Warning
-
-You shouldn't use this nor the [discord/discord-rpc](https://github.com/discord/discord-rpc) repositories if you don't like your activity data swapped randomly (probably a memory management issue somewhere deep down in the serializer).
-
 ## Deprecation Notice
 
 This library has been deprecated in favor of Discord's GameSDK. [Learn more here](https://discord.com/developers/docs/game-sdk/sdk-starter-guide)
 
-## What's new in this fork
+## Warning
+
+You shouldn't use this nor the [discord/discord-rpc](https://github.com/discord/discord-rpc) repositories if you don't like your activity data swapped randomly (probably a memory management issue somewhere deep down in the serializer).
+
+## Fork Changes
 
 ### Buttons
 
