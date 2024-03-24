@@ -339,7 +339,7 @@ extern "C" DISCORD_EXPORT void Discord_Initialize(const char* applicationId,
                 StringCopy(connectedUser.discriminator, discriminator);
             }
 
-            auto globalName = GetStrMember(user, "globalName");
+            auto globalName = GetStrMember(user, "global_name");
             if (globalName) {
                 StringCopy(connectedUser.globalName, globalName);
             }
@@ -354,7 +354,7 @@ extern "C" DISCORD_EXPORT void Discord_Initialize(const char* applicationId,
                 connectedUser.flags = flags;
             }
 
-            auto premiumType = GetIntMember(user, "premiumType");
+            auto premiumType = GetIntMember(user, "premium_type");
             if (premiumType) {
                 connectedUser.premiumType = premiumType;
             }
