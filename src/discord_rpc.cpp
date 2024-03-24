@@ -15,6 +15,11 @@
 #include <thread>
 #endif
 
+#include "rapidjson/document.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/writer.h"
+#include <iostream>
+
 constexpr size_t MaxMessageSize{16 * 1024};
 constexpr size_t MessageQueueSize{8};
 constexpr size_t JoinQueueSize{8};
@@ -44,6 +49,10 @@ struct User {
     // optional 'a_' + md5 hex digest (32 bytes) + null terminator = 35
     char avatar[128];
     // Rounded way up because I'm paranoid about games breaking from future changes in these sizes
+    char globalName[344];
+    bool bot;
+    int flags;
+    int premium;
 };
 
 static RpcConnection* Connection{nullptr};
@@ -175,6 +184,11 @@ static void Discord_UpdateConnection(void)
 
                 auto data = GetObjMember(&message, "data");
 
+                //rapidjson::StringBuffer buffer;
+                //rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+                //data->Accept(writer);
+                //std::cout << buffer.GetString() << std::endl;
+
                 if (strcmp(evtName, "ACTIVITY_JOIN") == 0) {
                     auto secret = GetStrMember(data, "secret");
                     if (secret) {
@@ -190,7 +204,13 @@ static void Discord_UpdateConnection(void)
                     }
                 }
                 else if (strcmp(evtName, "ACTIVITY_JOIN_REQUEST") == 0) {
+                    //rapidjson::StringBuffer buffer;
+                    //rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+                    //data->Accept(writer);
+                    //std::cout << buffer.GetString() << std::endl;
+
                     auto user = GetObjMember(data, "user");
+
                     auto userId = GetStrMember(user, "id");
                     auto username = GetStrMember(user, "username");
                     auto avatar = GetStrMember(user, "avatar");
@@ -317,16 +337,39 @@ extern "C" DISCORD_EXPORT void Discord_Initialize(const char* applicationId,
         }
         auto data = GetObjMember(&readyMessage, "data");
         auto user = GetObjMember(data, "user");
+
         auto userId = GetStrMember(user, "id");
         auto username = GetStrMember(user, "username");
         auto avatar = GetStrMember(user, "avatar");
         if (userId && username) {
             StringCopy(connectedUser.userId, userId);
             StringCopy(connectedUser.username, username);
+
             auto discriminator = GetStrMember(user, "discriminator");
             if (discriminator) {
                 StringCopy(connectedUser.discriminator, discriminator);
             }
+
+            auto globalName = GetStrMember(user, "global_name");
+            if (globalName) {
+                StringCopy(connectedUser.globalName, globalName);
+            }
+
+            auto bot = GetBoolMember(user, "bot");
+            if (bot) {
+                connectedUser.bot = bot;
+            }
+
+            auto flags = GetIntMember(user, "flags");
+            if (flags) {
+                connectedUser.flags = flags;
+            }
+
+            auto premium = GetIntMember(user, "premium_type");
+            if (premium) {
+                connectedUser.premium = premium;
+            }
+
             if (avatar) {
                 StringCopy(connectedUser.avatar, avatar);
             }
@@ -424,7 +467,11 @@ extern "C" DISCORD_EXPORT void Discord_RunCallbacks(void)
             DiscordUser du{connectedUser.userId,
                            connectedUser.username,
                            connectedUser.discriminator,
-                           connectedUser.avatar};
+                           connectedUser.avatar,
+                           connectedUser.globalName,
+                           connectedUser.bot,
+                           connectedUser.flags,
+                           connectedUser.premium};
             Handlers.ready(&du);
         }
     }

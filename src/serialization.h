@@ -213,3 +213,14 @@ inline const char* GetStrMember(JsonValue* obj,
     }
     return notFoundDefault;
 }
+
+inline int GetBoolMember(JsonValue* obj, const char* name, bool notFoundDefault = false)
+{
+    if (obj) {
+        auto member = obj->FindMember(name);
+        if (member != obj->MemberEnd() && member->value.IsBool()) {
+            return member->value.GetBool();
+        }
+    }
+    return notFoundDefault;
+}
