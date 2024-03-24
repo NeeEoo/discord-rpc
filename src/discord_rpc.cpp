@@ -49,10 +49,10 @@ struct User {
     // optional 'a_' + md5 hex digest (32 bytes) + null terminator = 35
     char avatar[128];
     // Rounded way up because I'm paranoid about games breaking from future changes in these sizes
-    char global_name[344];
+    char globalName[344];
     bool bot;
     int flags;
-    int premium_type;
+    int premiumType;
 };
 
 static RpcConnection* Connection{nullptr};
@@ -339,9 +339,9 @@ extern "C" DISCORD_EXPORT void Discord_Initialize(const char* applicationId,
                 StringCopy(connectedUser.discriminator, discriminator);
             }
 
-            auto global_name = GetStrMember(user, "global_name");
-            if (global_name) {
-                StringCopy(connectedUser.global_name, global_name);
+            auto globalName = GetStrMember(user, "globalName");
+            if (globalName) {
+                StringCopy(connectedUser.globalName, globalName);
             }
 
             auto bot = GetBoolMember(user, "bot");
@@ -354,9 +354,9 @@ extern "C" DISCORD_EXPORT void Discord_Initialize(const char* applicationId,
                 connectedUser.flags = flags;
             }
 
-            auto premium_type = GetIntMember(user, "premium_type");
-            if (premium_type) {
-                connectedUser.premium_type = premium_type;
+            auto premiumType = GetIntMember(user, "premiumType");
+            if (premiumType) {
+                connectedUser.premiumType = premiumType;
             }
 
             if (avatar) {
