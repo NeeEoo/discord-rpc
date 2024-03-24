@@ -51,10 +51,10 @@ typedef struct DiscordUser {
     const char* username;
     const char* discriminator;
     const char* avatar;
-    const char* globalName;
+    const char* global_name;
     bool bot;
     int flags;
-    int premium;
+    int premium_type;
 } DiscordUser;
 
 typedef struct DiscordEventHandlers {
