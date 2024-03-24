@@ -49,10 +49,10 @@ struct User {
     // optional 'a_' + md5 hex digest (32 bytes) + null terminator = 35
     char avatar[128];
     // Rounded way up because I'm paranoid about games breaking from future changes in these sizes
-    char globalName[344];
+    char global_name[344];
     bool bot;
     int flags;
-    int premium;
+    int premium_type;
 };
 
 static RpcConnection* Connection{nullptr};
@@ -184,11 +184,6 @@ static void Discord_UpdateConnection(void)
 
                 auto data = GetObjMember(&message, "data");
 
-                //rapidjson::StringBuffer buffer;
-                //rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-                //data->Accept(writer);
-                //std::cout << buffer.GetString() << std::endl;
-
                 if (strcmp(evtName, "ACTIVITY_JOIN") == 0) {
                     auto secret = GetStrMember(data, "secret");
                     if (secret) {
@@ -204,13 +199,7 @@ static void Discord_UpdateConnection(void)
                     }
                 }
                 else if (strcmp(evtName, "ACTIVITY_JOIN_REQUEST") == 0) {
-                    //rapidjson::StringBuffer buffer;
-                    //rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-                    //data->Accept(writer);
-                    //std::cout << buffer.GetString() << std::endl;
-
                     auto user = GetObjMember(data, "user");
-
                     auto userId = GetStrMember(user, "id");
                     auto username = GetStrMember(user, "username");
                     auto avatar = GetStrMember(user, "avatar");
@@ -350,9 +339,9 @@ extern "C" DISCORD_EXPORT void Discord_Initialize(const char* applicationId,
                 StringCopy(connectedUser.discriminator, discriminator);
             }
 
-            auto globalName = GetStrMember(user, "global_name");
-            if (globalName) {
-                StringCopy(connectedUser.globalName, globalName);
+            auto global_name = GetStrMember(user, "global_name");
+            if (global_name) {
+                StringCopy(connectedUser.global_name, global_name);
             }
 
             auto bot = GetBoolMember(user, "bot");
@@ -365,9 +354,9 @@ extern "C" DISCORD_EXPORT void Discord_Initialize(const char* applicationId,
                 connectedUser.flags = flags;
             }
 
-            auto premium = GetIntMember(user, "premium_type");
-            if (premium) {
-                connectedUser.premium = premium;
+            auto premium_type = GetIntMember(user, "premium_type");
+            if (premium_type) {
+                connectedUser.premium_type = premium_type;
             }
 
             if (avatar) {
