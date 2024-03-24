@@ -460,7 +460,7 @@ extern "C" DISCORD_EXPORT void Discord_RunCallbacks(void)
                            connectedUser.globalName,
                            connectedUser.bot,
                            connectedUser.flags,
-                           connectedUser.premium};
+                           connectedUser.premiumType};
             Handlers.ready(&du);
         }
     }
