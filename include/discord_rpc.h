@@ -75,6 +75,7 @@ typedef struct DiscordEventHandlers {
     void (*joinGame)(const char* joinSecret);
     void (*spectateGame)(const char* spectateSecret);
     void (*joinRequest)(const DiscordUser* request);
+    void (*anyResponse)(const char* data);
 } DiscordEventHandlers;
 
 #define DISCORD_REPLY_NO 0
@@ -83,11 +84,13 @@ typedef struct DiscordEventHandlers {
 #define DISCORD_PARTY_PRIVATE 0
 #define DISCORD_PARTY_PUBLIC 1
 
+DISCORD_EXPORT void Discord_SetDebugMode(bool debug);
 DISCORD_EXPORT void Discord_Initialize(const char* applicationId,
                                        DiscordEventHandlers* handlers,
                                        int autoRegister,
                                        const char* optionalSteamId);
 DISCORD_EXPORT void Discord_Shutdown(void);
+DISCORD_EXPORT void Discord_SendCustomCommand(const char* data);
 
 /* checks for incoming messages, dispatches callbacks */
 DISCORD_EXPORT void Discord_RunCallbacks(void);

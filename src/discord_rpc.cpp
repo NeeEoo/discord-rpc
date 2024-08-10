@@ -76,6 +76,7 @@ static QueuedMessage QueuedPresence{};
 static MsgQueue<QueuedMessage, MessageQueueSize> SendQueue;
 static MsgQueue<User, JoinQueueSize> JoinAskQueue;
 static User connectedUser;
+static bool DebugMode = false;
 
 // We want to auto connect, and retry on failure, but not as fast as possible. This does expoential
 // backoff from 0.5 seconds to 1 minute
@@ -163,6 +164,14 @@ static void Discord_UpdateConnection(void)
                 break;
             }
 
+            if(DebugMode) {
+                printf("Got message: %s\n", Stringify(message));
+            }
+
+            if(Handlers.anyResponse) {
+                Handlers.anyResponse(Stringify(message));
+            }
+
             const char* evtName = GetStrMember(&message, "evt");
             const char* nonce = GetStrMember(&message, "nonce");
 
@@ -241,6 +250,9 @@ static void Discord_UpdateConnection(void)
         while (SendQueue.HavePendingSends()) {
             auto qmessage = SendQueue.GetNextSendMessage();
             Connection->Write(qmessage->buffer, qmessage->length);
+            if(DebugMode) {
+                printf("Sent message: %s\n", qmessage->buffer);
+            }
             SendQueue.CommitSend();
         }
     }
@@ -277,6 +289,11 @@ static bool DeregisterForEvent(const char* evtName)
         return true;
     }
     return false;
+}
+
+extern "C" DISCORD_EXPORT void Discord_SetDebugMode(bool debug)
+{
+    DebugMode = debug;
 }
 
 extern "C" DISCORD_EXPORT void Discord_Initialize(const char* applicationId,
@@ -428,6 +445,19 @@ extern "C" DISCORD_EXPORT void Discord_Respond(const char* userId, /* DISCORD_RE
     if (qmessage) {
         qmessage->length =
           JsonWriteJoinReply(qmessage->buffer, sizeof(qmessage->buffer), userId, reply, Nonce++);
+        SendQueue.CommitAdd();
+        SignalIOActivity();
+    }
+}
+
+extern "C" DISCORD_EXPORT void Discord_SendCustomCommand(const char* data)
+{
+    auto qmessage = SendQueue.GetNextAddMessage();
+    if (qmessage) {
+        char buffer[16384];
+        strcpy(buffer, data);
+        strcpy(qmessage->buffer, buffer);
+        qmessage->length = strlen(buffer);
         SendQueue.CommitAdd();
         SignalIOActivity();
     }
