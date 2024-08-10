@@ -324,6 +324,9 @@ extern "C" DISCORD_EXPORT void Discord_Initialize(const char* applicationId,
             UpdatePresence.exchange(true);
             SignalIOActivity();
         }
+
+        //printf("Discord: %s", Stringify(readyMessage));
+
         auto data = GetObjMember(&readyMessage, "data");
         auto user = GetObjMember(data, "user");
 
@@ -404,6 +407,7 @@ extern "C" DISCORD_EXPORT void Discord_UpdatePresence(const DiscordRichPresence*
         std::lock_guard<std::mutex> guard(PresenceMutex);
         QueuedPresence.length = JsonWriteRichPresenceObj(
           QueuedPresence.buffer, sizeof(QueuedPresence.buffer), Nonce++, Pid, presence);
+        //printf("Discord: %s", QueuedPresence.buffer);
         UpdatePresence.exchange(true);
     }
     SignalIOActivity();

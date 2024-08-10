@@ -183,6 +183,36 @@ size_t JsonWriteRichPresenceObj(char* dest,
                     }
                 }
 
+                if(presence->activityType != 0) {
+                    bool hasValidUrl = false;
+                    if(presence->activityType == DISCORD_ACTIVITY_STREAMING) {
+                        if(presence->streamUrl) {
+                            if(strncmp(presence->streamUrl, "http", 4) == 0) { // TODO: Check if it's a valid url
+                                hasValidUrl = true;
+                            }
+                        }
+                    }
+
+                    // Prevent errors if the activity type is wrong
+                    if((presence->activityType == DISCORD_ACTIVITY_PLAYING) ||
+                       (presence->activityType == DISCORD_ACTIVITY_STREAMING && hasValidUrl) ||
+                       (presence->activityType == DISCORD_ACTIVITY_LISTENING) ||
+                       (presence->activityType == DISCORD_ACTIVITY_WATCHING) ||
+                       (presence->activityType == DISCORD_ACTIVITY_COMPETING)) {
+                        writer.Key("type");
+                        writer.Int(presence->activityType);
+                    }
+
+                    if(presence->activityType == DISCORD_ACTIVITY_STREAMING) {
+                        if(hasValidUrl) {
+                            writer.Key("url");
+                            writer.String(presence->streamUrl);
+                        } else {
+                            printf("DISCORD_RPC: Streaming activity must have a url from twitch.tv or youtube.com\n");
+                        }
+                    }
+                }
+
                 writer.Key("instance");
                 writer.Bool(presence->instance != 0);
             }

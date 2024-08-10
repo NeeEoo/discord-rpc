@@ -26,6 +26,12 @@
 extern "C" {
 #endif
 
+#define DISCORD_ACTIVITY_PLAYING 0
+#define DISCORD_ACTIVITY_STREAMING 1
+#define DISCORD_ACTIVITY_LISTENING 2
+#define DISCORD_ACTIVITY_WATCHING 3
+#define DISCORD_ACTIVITY_COMPETING 5
+
 typedef struct DiscordRichPresence {
     const char* state;   /* max 128 bytes */
     const char* details; /* max 128 bytes */
@@ -47,6 +53,8 @@ typedef struct DiscordRichPresence {
     const char* button1Url;   /* max 512 bytes */
     const char* button2Label; /* max 32 bytes */
     const char* button2Url;   /* max 512 bytes */
+    int activityType; /* 0 = Playing, 1 = Streaming, 2 = Listening to, 3 = Watching, 5 = Competing in */
+    const char* streamUrl; /* max 512 bytes */
 } DiscordRichPresence;
 
 typedef struct DiscordUser {

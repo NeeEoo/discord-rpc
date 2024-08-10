@@ -224,3 +224,23 @@ inline int GetBoolMember(JsonValue* obj, const char* name, bool notFoundDefault 
     }
     return notFoundDefault;
 }
+
+inline char * Stringify(JsonDocument &doc)
+{
+    rapidjson::StringBuffer buffer;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+    doc.Accept(writer);
+    char *str = new char[buffer.GetSize() + 1];
+    strcpy(str, buffer.GetString());
+    return str;
+}
+
+inline char * Stringify(const JsonValue &value)
+{
+    rapidjson::StringBuffer buffer;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+    value.Accept(writer);
+    char *str = new char[buffer.GetSize() + 1];
+    strcpy(str, buffer.GetString());
+    return str;
+}

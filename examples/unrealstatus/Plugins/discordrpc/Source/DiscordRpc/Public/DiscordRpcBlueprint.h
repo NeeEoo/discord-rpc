@@ -96,6 +96,8 @@ struct FDiscordRichPresence {
     FString spectateSecret;
     UPROPERTY(BlueprintReadWrite)
     bool instance;
+    UPROPERTY(BlueprintReadWrite)
+    int activityType;
 };
 
 /**

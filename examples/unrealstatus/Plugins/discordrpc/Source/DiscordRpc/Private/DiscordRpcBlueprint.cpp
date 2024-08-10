@@ -155,6 +155,7 @@ void UDiscordRpc::UpdatePresence()
     rp.partyMax = RichPresence.partyMax;
     rp.partyPrivacy = (int)RichPresence.partyPrivacy;
     rp.instance = RichPresence.instance;
+    rp.activityType = RichPresence.activityType;
 
     Discord_UpdatePresence(&rp);
 }

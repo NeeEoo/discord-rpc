@@ -52,6 +52,7 @@ static void updateDiscordPresence()
         discordPresence.joinSecret = "join";
         discordPresence.spectateSecret = "look";
         discordPresence.instance = 0;
+        discordPresence.activityType = DISCORD_ACTIVITY_PLAYING;
         Discord_UpdatePresence(&discordPresence);
     }
     else {
